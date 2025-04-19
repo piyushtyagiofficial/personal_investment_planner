@@ -1,10 +1,25 @@
+import { useState } from 'react';
 import useStore from '../store/investmentStore';
 
-export default function InvestmentForm() {
+export default function InvestmentForm({ onSubmit, loading }) {
   const { income, setIncome, riskProfile, setRiskProfile } = useStore();
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!income || income <= 0) {
+      setError('Please enter a valid income.');
+      return;
+    }
+    setError('');
+    onSubmit();
+  };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <form
+      className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md"
+      onSubmit={handleSubmit}
+    >
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">Monthly Income (₹)</label>
         <input
@@ -15,7 +30,6 @@ export default function InvestmentForm() {
           placeholder="Enter your monthly income"
         />
       </div>
-      
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">Risk Profile</label>
         <select
@@ -28,6 +42,14 @@ export default function InvestmentForm() {
           <option value="high">High</option>
         </select>
       </div>
-    </div>
+      {error && <p className="text-red-600 mb-2">{error}</p>}
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        disabled={loading}
+      >
+        {loading ? 'Generating...' : 'Generate Plan'}
+      </button>
+    </form>
   );
 }
