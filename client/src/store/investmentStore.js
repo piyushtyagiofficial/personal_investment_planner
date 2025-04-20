@@ -2,8 +2,8 @@ import { create } from 'zustand';
 
 const useStore = create((set) => ({
   income: '',
-  riskProfile: 'moderate',
-  strategy: null,
+  riskProfile: 'low',
+  strategy: '',
   isLoading: false,
   
   setIncome: (income) => set({ income }),

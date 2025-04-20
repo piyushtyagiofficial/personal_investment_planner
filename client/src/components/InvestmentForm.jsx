@@ -3,8 +3,7 @@ import useStore from '../store/investmentStore';
 import axios from 'axios';
 
 export default function InvestmentForm({ onSubmit, loading }) {
-  const { income, setIncome, riskProfile, setRiskProfile } = useStore();
-  const [strategy, setStrategy] = useState("")
+  const { income, setIncome, riskProfile, setRiskProfile, strategy, setStrategy } = useStore();
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
@@ -23,7 +22,8 @@ export default function InvestmentForm({ onSubmit, loading }) {
     try {
       const response = await axios.post('http://localhost:3000/api/generate-strategy', formData);
       setStrategy(response.data);
-      setIncome('');
+      // console.log(strategy);
+
     } catch (err) {
       console.error('Error generating strategy:', err);
       setError('Failed to generate strategy. Please try again.');
@@ -36,13 +36,13 @@ export default function InvestmentForm({ onSubmit, loading }) {
       onSubmit={handleSubmit}
     >
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">Monthly Income (₹)</label>
+        <label className="block text-gray-700 mb-2">Monthly Savings (₹)</label>
         <input
           type="number"
           value={income}
           onChange={(e) => setIncome(e.target.value)}
           className="w-full p-2 border rounded-md"
-          placeholder="Enter your monthly income"
+          placeholder="Enter your monthly savings"
         />
       </div>
       <div className="mb-4">

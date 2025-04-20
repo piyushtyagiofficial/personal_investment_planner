@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useStore from '../store/investmentStore';
 import InvestmentForm from '../components/InvestmentForm';
-import StrategyDisplay from '../components/StrategyDisplay';
+import PersonalisedPlan from '../components/PersonalisedPlan';
 import { generateStrategy } from '../services/gemini';
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
       <h1 className="text-3xl font-bold text-center mb-8 text-blue-700">Personal Investment Planner</h1>
       <InvestmentForm onSubmit={handleFormSubmit} loading={isLoading} />
       {error && <p className="text-red-600 text-center mt-4">{error}</p>}
-      <StrategyDisplay />
+      <PersonalisedPlan />
     </div>
   );
 }
