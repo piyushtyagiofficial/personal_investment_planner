@@ -1,19 +1,34 @@
 import { useState } from 'react';
 import useStore from '../store/investmentStore';
+import axios from 'axios';
 
 export default function InvestmentForm({ onSubmit, loading }) {
   const { income, setIncome, riskProfile, setRiskProfile } = useStore();
+  const [strategy, setStrategy] = useState("")
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!income || income <= 0) {
       setError('Please enter a valid income.');
       return;
     }
+  
     setError('');
-    onSubmit();
-  };
+    const formData = {
+      income: parseFloat(income),
+      riskProfile,
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:3000/api/generate-strategy', formData);
+      setStrategy(response.data);
+      setIncome('');
+    } catch (err) {
+      console.error('Error generating strategy:', err);
+      setError('Failed to generate strategy. Please try again.');
+    }
+  };  
 
   return (
     <form
